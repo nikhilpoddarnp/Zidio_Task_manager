@@ -7,6 +7,9 @@ import Textbox from "../components/Textbox";
 import Button from "../components/Button";
 import { useSelector } from "react-redux";
 import { useLoginMutation } from "../redux/slices/api/authApiSlice";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../redux/slices/authSlice"; // ✅ Make sure path is correct
+
 
 
 const Login = () => {
@@ -19,11 +22,14 @@ const Login = () => {
 
   const navigate = useNavigate();
   const [login, {isLoading}] = useLoginMutation()
+  const dispatch = useDispatch();
 
   const submitHandler = async (data) => {
     try{
-      const result = await login (data).unwrap();
+      const result = await login (data).unwrap(); // result me user + token aayega most likely
       console.log(result);
+      dispatch(setCredentials(result)); 
+    toast.success("Login successful!");
     }catch (error){
       console.log(error);
       toast.error(error?.data?.message || error.message);
