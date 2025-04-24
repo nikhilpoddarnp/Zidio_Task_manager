@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
+import { toast } from "sonner";
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
 import { useSelector } from "react-redux";
 import { useLoginMutation } from "../redux/slices/api/authApiSlice";
+
 
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
@@ -19,11 +22,11 @@ const Login = () => {
 
   const submitHandler = async (data) => {
     try{
-      const result = await login (data);
+      const result = await login (data).unwrap();
       console.log(result);
     }catch (error){
       console.log(error);
-      TransformStream.error(error?.data?.message || error.message);
+      toast.error(error?.data?.message || error.message);
     }
   };
 
@@ -37,9 +40,9 @@ const Login = () => {
         {/* left side */}
         <div className='h-full w-full lg:w-2/3 flex flex-col items-center justify-center'>
           <div className='w-full md:max-w-lg 2xl:max-w-3xl flex flex-col items-center justify-center gap-5 md:gap-y-10 2xl:-mt-20'>
-            <span className='flex gap-1 py-1 px-3 border rounded-full text-sm md:text-base bordergray-300 text-gray-600'>
+            {/* <span className='flex gap-1 py-1 px-3 border rounded-full text-sm md:text-base bordergray-300 text-gray-600'>
               Manage all your task in one place!
-            </span>
+            </span> */}
             <p className='flex flex-col gap-0 md:gap-4 text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-blue-700'>
               <span>Zidio</span>
               <span>Task Manager</span>
